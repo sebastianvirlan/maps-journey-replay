@@ -24,18 +24,27 @@ Javascript Library that loads a journey JSON object (coordinates + timestamp) an
     var googleMapReplay = new journeyReplay({
         type: journeyReplay.REPLAY_TYPE.DYNAMIC_MARKER_AND_POLY_LINES_COLORED_BY_SPEED,
         logger: console.log,
+	gradientGenerator: function (options) {
+            return new GradientGenerator({colours: options.speedColours, steps: options.steps}).hex()
+        },
         fetchMapPoints: {
             url: 'http://192.168.64.2/journey_2.json'
         },
-        mapProvider   : googleMaps,
+        mapProvider: googleMaps,
         marker: {
+	    icon: 'images/bus.svg',
+            anchor: [39, 60],
+            size: [100, 100],
+            scaledSize: [100, 75],
             onFrame: function () {
                 // do stuff
             },
             onLocation: function () {
                 // do stuff
             }
-        }
+        },
+	speedColours : ["#00ff00", "#ffff00", "#ff0000"],
+	colourSteps : 100
     });
     console.log(googleMapReplay);
     googleMapReplay.init();
