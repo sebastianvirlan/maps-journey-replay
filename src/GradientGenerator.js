@@ -1,7 +1,7 @@
 function GradientGenerator (options) {
     var _self = this;
 
-    this.colors = options['colours'].map(function (colour) {
+    this.colours = options['colours'].map(function (colour) {
         return toRgb(colour)
     });
 
@@ -9,7 +9,7 @@ function GradientGenerator (options) {
     this.steps = options['steps'] - 1;
 
     // Number of gradients to calculate
-    this.gradient_count = this.colors.length - 1;
+    this.gradient_count = this.colours.length - 1;
 
     // SubSteps per gradient
     this.substeps = parseInt(this.steps / this.gradient_count);
@@ -24,26 +24,26 @@ function GradientGenerator (options) {
                 steps++;
                 _self.remainder--;
             }
-            return accumulator.concat(gradientFor(_self.colors[currentValue], _self.colors[currentValue+1], steps));
+            return accumulator.concat(gradientFor(_self.colours[currentValue], _self.colours[currentValue+1], steps));
         }, []);
-        gradients.push(this.colors[this.colors.length - 1]);
+        gradients.push(this.colours[this.colours.length - 1]);
         return gradients;
     };
 
     this.hex = function () {
-        return this.generate().map(function (color) {
-            return toHex(color)
+        return this.generate().map(function (colour) {
+            return toHex(colour)
         });
     };
 
     this.rgb = function () {
-        return this.generate().map(function (color) {
-            return toRgb(color)
+        return this.generate().map(function (colour) {
+            return toRgb(colour)
         });
     };
 
     function gradientFor (colour1, colour2, steps) {
-        // Calculate a single color-to-color gradient
+        // Calculate a single colour-to-colour gradient
         return timesArr(steps).reduce(function (accumulator, currentValue) {
             var ratio = currentValue / steps;
             var r = colour2[0] * ratio + colour1[0] * (1 - ratio);
@@ -99,6 +99,6 @@ function GradientGenerator (options) {
     }
 
     function colourError (colour) {
-        new Error(colour + ' is not a valid RGB or Hex color')
+        new Error(colour + ' is not a valid RGB or Hex colour')
     }
 }
