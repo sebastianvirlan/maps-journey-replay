@@ -255,7 +255,7 @@ var googleMaps = function (logger) {
             object = new google.maps.Polyline({
                 path: options.coordinates || [],
                 geodesic: true,
-                strokeColor: options.color || '#000',
+                strokeColor: options.colour || '#000',
                 strokeOpacity: options.opacity || 1.0,
                 strokeWeight: options.strokeWeight || 4
             });

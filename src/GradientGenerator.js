@@ -1,7 +1,7 @@
 function GradientGenerator (options) {
     var _self = this;
 
-    this.colors = options['colors'].map(function (colour) {
+    this.colors = options['colours'].map(function (colour) {
         return toRgb(colour)
     });
 

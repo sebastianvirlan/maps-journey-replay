@@ -11,13 +11,13 @@
     <script>
         function initMap() {
             var googleMapReplay = new journeyReplay({
-                type: journeyReplay.REPLAY_TYPE.DYNAMIC_MARKER_AND_POLY_LINES_COLORED_BY_SPEED,
+                type: journeyReplay.REPLAY_TYPE.DYNAMIC_MARKER_AND_POLY_LINES_COLOURED_BY_SPEED,
                 logger: function () {},
                 gradientGenerator: function (options) {
-                    return new GradientGenerator({colors: options.speedColors, steps: options.steps}).hex()
+                    return new GradientGenerator({colours: options.speedColours, steps: options.steps}).hex()
                 },
                 fetchMapPoints: {
-                    url: window.location.origin + '/journey_2.json'
+                    url: window.location.origin + '/journey_3.json'
                 },
                 mapProvider   : googleMaps,
                 marker: {

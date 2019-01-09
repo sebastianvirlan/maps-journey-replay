@@ -5,7 +5,7 @@ var journeyReplay = function(optionsObj) {
         STATIC_MARKER_AND_POLY_LINES    : _playStaticMarkerAndPolyLine,
         DYNAMIC_MARKER                  : _playDynamicMarker,
         DYNAMIC_MARKER_AND_POLY_LINES                   : _playDynamicMarkerAndPolyLine,
-        DYNAMIC_MARKER_AND_POLY_LINES_COLORED_BY_SPEED  : _playDynamicMarkerAndPolyLineColored
+        DYNAMIC_MARKER_AND_POLY_LINES_COLOURED_BY_SPEED  : _playDynamicMarkerAndPolyLineColoured
     };
 
     var _defaults = {
@@ -13,8 +13,8 @@ var journeyReplay = function(optionsObj) {
         type            : REPLAY_TYPE.STATIC_MARKER,
         domID           : 'map',
         mapProvider     : null,
-        colorSteps      : 100,
-        speedColors     : ["#00ff00", "#ffff00", "#ff0000"],
+        colourSteps      : 100,
+        speedColours     : ["#00ff00", "#ffff00", "#ff0000"],
         fetchMapPoints: {
             url: null,
             onDone: function () {}
@@ -163,12 +163,12 @@ var journeyReplay = function(optionsObj) {
         });
     }
 
-    function _playDynamicMarkerAndPolyLineColored(fromIndex) {
+    function _playDynamicMarkerAndPolyLineColoured(fromIndex) {
         optionsObj.logger('Starting from index ' + fromIndex);
         _playDynamicMarker(fromIndex, function(position, speed){
             _createPolyLine({
                 coordinates: [position.currentLatLng, position.next],
-                color: _getGradientColor(parseInt(speed))
+                colour: _getGradientColour(parseInt(speed))
             });
         });
     }
@@ -237,10 +237,10 @@ var journeyReplay = function(optionsObj) {
         if (!optionsObj.gradientGenerator) {
             throw new Error('No gradient processor specified')
         }
-        _gradients = optionsObj.gradientGenerator({ speedColors: optionsObj.speedColors, steps: steps});
+        _gradients = optionsObj.gradientGenerator({ speedColours: optionsObj.speedColours, steps: steps});
     };
 
-    var _getGradientColor = function(index) {
+    var _getGradientColour = function(index) {
         if(index > _gradients.length)
             return _gradients[_gradients.length - 1];
 
@@ -277,7 +277,7 @@ var journeyReplay = function(optionsObj) {
                 }
             })
         }
-        _generateGradient(optionsObj.colorSteps);
+        _generateGradient(optionsObj.colourSteps);
     };
 
     this.init = function() {
@@ -301,5 +301,5 @@ journeyReplay.REPLAY_TYPE = {
     STATIC_MARKER_AND_POLY_LINES   : 'STATIC_MARKER_AND_POLY_LINES',
     DYNAMIC_MARKER                  : 'DYNAMIC_MARKER',
     DYNAMIC_MARKER_AND_POLY_LINES                   : 'DYNAMIC_MARKER_AND_POLY_LINES',
-    DYNAMIC_MARKER_AND_POLY_LINES_COLORED_BY_SPEED  : 'DYNAMIC_MARKER_AND_POLY_LINES_COLORED_BY_SPEED'
+    DYNAMIC_MARKER_AND_POLY_LINES_COLOURED_BY_SPEED  : 'DYNAMIC_MARKER_AND_POLY_LINES_COLOURED_BY_SPEED'
 };
