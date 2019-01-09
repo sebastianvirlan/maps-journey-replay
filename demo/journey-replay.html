@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="../src/lib.js"></script>
+    <script src="../src/map-providers/googleMaps.js"></script>
+    <script src="../src/journeyReplay.js"></script>
+    <script src="../src/GradientGenerator.js"></script>
+</head>
+    <body>
+        <div id="map" style="height: 100vh"></div>
+    <script>
+        function initMap() {
+            var googleMapReplay = new journeyReplay({
+                type: journeyReplay.REPLAY_TYPE.DYNAMIC_MARKER_AND_POLY_LINES_COLORED_BY_SPEED,
+                logger: function () {},
+                gradientGenerator: function (options) {
+                    return new GradientGenerator({colors: options.speedColors, steps: options.steps}).hex()
+                },
+                fetchMapPoints: {
+                    url: window.location.origin + '/journey_2.json'
+                },
+                mapProvider   : googleMaps,
+                marker: {
+                    icon: 'images/bus.svg',
+                    anchor: [39, 60],
+                    size: [100, 100],
+                    scaledSize: [100, 75],
+                    onFrame: function () {
+                        // console.log('ok');
+                    },
+                    onLocation: function () {
+                        // console.log('yee');
+                    }
+                }
+            });
+            googleMapReplay.init();
+        }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&amp;libraries=geometry&amp;callback=initMap"></script>
+    </body>
+</html>
