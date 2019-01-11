@@ -16,7 +16,7 @@ var googleMaps = function (logger) {
     };
 
     this.onMapIdle = function(callback) {
-         google.maps.event.addListenerOnce(map, 'tilesloaded', callback);
+        google.maps.event.addListenerOnce(map, 'tilesloaded', callback);
     };
 
     this.setCenter = function(latLng) {
