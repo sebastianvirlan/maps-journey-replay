@@ -8,10 +8,10 @@ var googleMaps = function (logger) {
 
         map = new google.maps.Map(document.getElementById(options.domID || 'map'), {
             center: {
-                lat: options.lat || 53.94681547683743,
-                lng: options.lng || -1.3701771502380204
+                lat: options.lat,
+                lng: options.lng
             },
-            zoom: options.zoom || 25.
+            zoom: options.zoom || 25
         });
     };
 
@@ -102,13 +102,13 @@ var googleMaps = function (logger) {
                 stop: function() {
                     animationRunning = false;
                     window.cancelAnimationFrame ? window.cancelAnimationFrame(self.animationHandler) : clearTimeout(self.animationHandler);
-                },
-                changeDuration: function(duration) {
-                    // animationRunning    = false;
-                    // options.duration    = duration;
-                    // startLatLng         = self.getLocation().latLng();
-                    // animationRunning    = true;
                 }
+                // changeDuration: function(duration) {
+                //     animationRunning    = false;
+                //     options.duration    = duration;
+                //     startLatLng         = self.getLocation().latLng();
+                //     animationRunning    = true;
+                // }
             };
 
             setRequestAnimationFrame();
@@ -128,8 +128,8 @@ var googleMaps = function (logger) {
                 var currentFrameLatLng  = self.getLocation().latLng();
                 var frameCallbackOptions = {
                     currentLatLng: currentFrameLatLng,
-                    start: new Location(startLocation.lat, startLocation.lng, startLocation.timestamp),
-                    finish: newLocation
+                    fromLocation: new Location(startLocation.lat, startLocation.lng, startLocation.timestamp),
+                    toLocation: newLocation
                 };
 
                 // animation ongoing
@@ -140,7 +140,7 @@ var googleMaps = function (logger) {
                     );
 
                     if (typeof options.onFrame === 'function')
-                        options.onFrame(Object.assign({ next: nextFrameLatLng }, frameCallbackOptions), animationHandler);
+                        options.onFrame(Object.assign({ nextLocation: nextFrameLatLng }, frameCallbackOptions), animationHandler);
 
                     self.setPosition(nextFrameLatLng);
 
@@ -154,7 +154,7 @@ var googleMaps = function (logger) {
                 if(durationRatio >= 1) {
                     _self.timestamp = newLocation.timestamp;
                     if (typeof options.onFrame === 'function')
-                        options.onFrame(Object.assign({ next: newLocation }, frameCallbackOptions), animationHandler);
+                        options.onFrame(Object.assign({ nextLocation: newLocation }, frameCallbackOptions), animationHandler);
 
                     self.setPosition(newLocation);
 

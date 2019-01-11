@@ -1,6 +1,10 @@
 # maps-journey-replay
 Javascript Library that loads a journey JSON object (coordinates + timestamp) and creates a replay on a map.
 
+## Demo
+
+![Maps Journey Replay](https://i.imgur.com/qxDeW48.png)
+
 ## Journey JSON format:
 ```JSON
 [
@@ -21,14 +25,14 @@ Javascript Library that loads a journey JSON object (coordinates + timestamp) an
 ## Initializing the library example:
 
 ```javascript
-    var googleMapReplay = new journeyReplay({
+    var mapJourneyReplay = new journeyReplay({
         type: journeyReplay.REPLAY_TYPE.DYNAMIC_MARKER_AND_POLY_LINES_COLORED_BY_SPEED,
         logger: console.log,
-	gradientGenerator: function (options) {
+        gradientGenerator: function (options) {
             return new GradientGenerator({colours: options.speedColours, steps: options.steps}).hex()
         },
         fetchMapPoints: {
-            url: 'http://192.168.64.2/journey_2.json'
+            url: 'http://192.168.64.2/journey.json'
         },
         mapProvider: googleMaps,
         marker: {
@@ -36,18 +40,26 @@ Javascript Library that loads a journey JSON object (coordinates + timestamp) an
             anchor: [39, 60],
             size: [100, 100],
             scaledSize: [100, 75],
-            onFrame: function () {
+            onFrame: function (currentFrame, speed, distance, animationHandler) {
                 // do stuff
             },
-            onLocation: function () {
+            onLocation: function (currentLocation) {
                 // do stuff
             }
         },
 	speedColours : ["#00ff00", "#ffff00", "#ff0000"],
 	colourSteps : 100
     });
-    console.log(googleMapReplay);
-    googleMapReplay.init();
+
+    mapJourneyReplay.marker.onFrame(function (currentFrame, speed, distance, animationHandler) {
+        // do stuff
+    });
+
+    mapJourneyReplay.marker.onLocation(function (currentLocation) {
+        // do stuff
+    });
+
+    journeyReplay.init();
 ```
 
 ## Options
@@ -120,7 +132,3 @@ var marker = {
     onLocation: function() {}
 }
 ```
-
-## Dependencies
-
-sdsdfsd<br/>sdfsdfsd
