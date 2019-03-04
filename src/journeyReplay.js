@@ -9,7 +9,7 @@ var journeyReplay = function(optionsObj) {
     };
 
     var _defaults = {
-        logger          : console.log,
+        logger          : console,
         type            : REPLAY_TYPE.STATIC_MARKER,
         domID           : 'map',
         mapProvider     : null,
@@ -17,7 +17,8 @@ var journeyReplay = function(optionsObj) {
         speedColours     : ["#00ff00", "#ffff00", "#ff0000"],
         fetchMapPoints: {
             url: null,
-            onDone: function () {}
+            onDone: function () {},
+            dataMap: null
         },
         marker: {
             onFrame: function () {},
@@ -36,8 +37,7 @@ var journeyReplay = function(optionsObj) {
 
     optionsObj = Object.assign(_defaults, optionsObj);
 
-    optionsObj.logger("Initialized mapReplay with options: ");
-    optionsObj.logger(optionsObj);
+    optionsObj.logger.info("Initialized Maps Journey Replay with options: ", optionsObj);
 
     var _mapProvider =  null;
     var MapLocations = null;
@@ -101,7 +101,7 @@ var journeyReplay = function(optionsObj) {
                 _setCurrentLocationIndex(fromIndex);
                 _playDynamicMarker(fromIndex + 1, callbackOnFrame);
                 optionsObj.marker.onLocation(currentLocation);
-                optionsObj.logger('Completed!');
+                optionsObj.logger.info('Animation completed');
             }
         });
     }
@@ -113,7 +113,6 @@ var journeyReplay = function(optionsObj) {
     }
 
     function _playDynamicMarkerAndPolyLineColoured(fromIndex) {
-        optionsObj.logger('Starting from index ' + fromIndex);
         _playDynamicMarker(fromIndex, function(position, speedObj){
             _createPolyLine({
                 coordinates: [position.currentLatLng, position.nextLocation],
@@ -214,11 +213,15 @@ var journeyReplay = function(optionsObj) {
             lib.httpRequest({
                 url: optionsObj.fetchMapPoints.url,
                 success: function(data) {
+                    var jsonData = JSON.parse(data)
 
                     if(typeof optionsObj.fetchMapPoints.onDone === 'function')
                         optionsObj.fetchMapPoints.onDone(data);
 
-                    setLocations(JSON.parse(data));
+                    if(typeof optionsObj.fetchMapPoints.dataMap === 'function')
+                        setLocations(optionsObj.fetchMapPoints.dataMap(jsonData));
+                    else
+                        setLocations(jsonData);
 
                     _initMap(function () {
                         startJourney();

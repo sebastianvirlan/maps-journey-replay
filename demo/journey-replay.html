@@ -15,7 +15,15 @@
         function initMap() {
             var mapJourneyReplay = new journeyReplay({
                 type: journeyReplay.REPLAY_TYPE.DYNAMIC_MARKER_AND_POLY_LINES_COLOURED_BY_SPEED,
-                logger: function () {},
+                logger: function () {
+                    var logger = {}
+                    for (var method in console) {
+                        if (typeof console[method] == 'function') {
+                            logger[method] = console[method].bind(window.console, '[' + method.toUpperCase() + ']');
+                        }
+                    }
+                    return logger;
+                }(),
                 gradientGenerator: function (options) {
                     return new GradientGenerator({colours: options.speedColours, steps: options.steps}).hex()
                 },
